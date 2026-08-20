@@ -1,0 +1,514 @@
+<!DOCTYPE HTML PUBLIC
+  "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<!--------------------------------------------------------------------------------
+|                                       HEAD                                     |
+--------------------------------------------------------------------------------->
+  <head>
+    <meta name="author" content="Klaus Höflinger"/>
+    <meta name="description" content="SkyObjects database"/>
+    <meta name="keywords" content="SkyObjects database"/>
+    <meta name="contact_addr" content="khoeflinger@t-online.de"/>
+    <meta http-equiv="content-type">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SkyObjects database</title>
+    <base target='_new'>
+
+  <!-- base scripts -->
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/select/3.0.0/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css"/>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+
+<!--------------------------------------------------------------------------------
+|                                       BODY                                     |
+--------------------------------------------------------------------------------->
+  <body>
+
+    <!-- main menu -->
+    <div id='nav' class='container'>
+      <ul>
+        <li onclick="getHome()">Home</li>
+        <li>|</li>
+        <li onclick="getAbout()">About</li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+        <li onclick="changePage('Constellations')">Constellations</li>
+        <li>|</li>
+        <li onclick="changePage('Categories')">Categories</li>
+        <li>|</li>
+        <li onclick="changePage('Catalogs')">Catalogs</li>
+        <li>|</li>
+        <li onclick="changePage('Messier Objects')">Messier</li>
+        <li>|</li>
+        <li onclick="changePage('Ngcic Objects')">NGC/IC</li>
+        <li>|</li>
+        <li onclick="changePage('Keywords')">Keywords</li>
+        <li>|</li>
+        <li onclick="changePage('SkyObjects')">Sky Objects</li>
+        <li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+        <li onclick="openDataModel()">Data Model</li>
+        <li>|</li>
+        <li onclick="changePage('documentation')">Documentation</li>
+      </ul>
+    </div>
+
+    <div class='container'>
+      <br>
+      <h1>SkyObjects Database</h1>
+      <div id="main-content"></div>
+    </div>
+
+<!--------------------------------------------------------------------------------
+|                                   DATA MODEL                                   |
+--------------------------------------------------------------------------------->
+    <div id="data-model" class='container' style='display:none'>
+        <img src="SkyObjects.png">
+    </div>
+
+<!--------------------------------------------------------------------------------
+|                                  DOCUMENTAION                                  |
+--------------------------------------------------------------------------------->
+    <div id="documentation" class='container' style='display:none'>
+      <h2>Documentation</h2>
+      <i>SkyObjects</i> contains a couple of object types with respect to celestrial items.
+      On this page we want to describe them together with their attributes.
+
+      <div>
+        <details open>
+          <summary class='kh-summary'>
+            Constellation
+          </summary>
+          <ul>
+            <li>code</li>
+            <li>name (lt)</li>
+            <li>name (de)</li>
+            <li>name (en)</li>
+            <li>detector</li>
+            <li>year</li>
+            <li>vis-1</li>
+            <li>vis-2</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+<!--------------------------------------------------------------------------------
+|                                   DATATABLES                                   |
+--------------------------------------------------------------------------------->
+    <div id="datatables">
+
+      <!-- constellation table -->
+      <div class='table-content' id='Constellations' style='display:none'>
+        <button class="table-button" onclick="openInfoDialog('Constellation')">Info</button>
+        <table class="compact stripe cell-border" id="Constellation-table">
+          <thead>
+            <tr>
+              <th width= "5%" text-align="right">Id</th>
+              <th width=" 5%" text-align="center">Code</th>
+              <th width="13%" text-align="center">Name (lt)</th>
+              <th width="13%" text-align="center">Name (de)</th>
+              <th width="13%" text-align="center">Name (en)</th>
+              <th width= "5%" text-align="center">N/S</th>
+              <th width="10%" text-align="center">Detector</th>
+              <th width= "5%" text-align="center">Year</th>
+              <th width="15%" text-align="center">Vis-1</th>
+              <th width="15%" text-align="center">Vis-2</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- category table -->
+      <div class='table-content' id='Categories' style='display:none'>
+        <button class="table-button" onclick="openInfoDialog('Category')">Info</button>
+        <table class="compact stripe cell-border" id="Category-table">
+          <thead>
+            <tr>
+              <th width= "5%" text-align="right">ID</th>
+              <th width= "5%" text-align="center">Code</th>
+              <th width="45%" text-align="center">Name (de)</th>
+              <th width="45%" text-align="center">Name (en)</th>
+            </tr>
+          </thead>
+          <tbody>
+        </table>
+      </div>
+
+      <!-- catalog table -->
+      <div class='table-content' id='Catalogs' style='display:none'>
+        <button class="table-button" onclick="openInfoDialog('Catalog')">Info</button>
+        <table class="compact stripe cell-border" id="Catalog-table">
+          <thead>
+            <tr>
+              <th width= "4%" text-align="right">ID</th>
+              <th width="16%" text-align="center">Name</th>
+              <th width="10%" text-align="center">Prefix</th>
+              <th width="70%" text-align="center">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- messier table -->
+      <div class='table-content' id='Messier Objects' style='display:none'>
+        <button class="table-button" onclick="openInfoDialog('MessierObject')">Info</button>
+        <table class="compact stripe cell-border" id="MessierObject-table">
+          <thead>
+            <tr>
+              <th width= "5%" text-align="right">ID</th>
+              <th width= "7%" text-align="center">Label</th>
+              <th width=" 3%" text-align="center">Const.</th>
+              <th width="15%" text-align="center">Category</th>
+              <th width=" 5%" text-align="center">Subtype</th>
+              <th width= "5%" text-align="center">Distance</th>
+              <th width= "5%" text-align="center">Unit</th>
+              <th width= "5%" text-align="center">V_Mag</th>
+              <th width="10%" text-align="center">NGC/IC</th>
+              <th width="40%" text-align="center">Remark</th>
+            </tr>
+          </thead>
+          <tbody>
+        </table>
+      </div>
+
+      <!-- ngcic table -->
+      <div class='table-content' id='Ngcic Objects' style='display:none'>
+        <button class="table-button" onclick="openInfoDialog('NgcicObject')">Info</button>
+        <table class="compact stripe cell-border" id="NgcicObject-table">
+          <thead>
+            <tr>
+              <th width=  "3%" text-align="right" >ID</th>
+              <th width=  "6%" text-align="center">Label</th>
+              <th width=  "3%" text-align="center">Constellation</th>
+              <th width= "10%" text-align="center">Category</th>
+              <th width=  "4%" text-align="center">Subtype</th>
+              <th width= "12%" text-align="center">R.&nbsp;Asc.</th>
+              <th width= "12%" text-align="center">Decl.</th>
+              <th width=  "2%" text-align="center">B_Mag</th>
+              <th width=  "2%" text-align="center">V_Mag</th>
+              <th width=  "4%" text-align="center">Brightn.</th>
+              <th width=  "4%" text-align="center">Angle</th>
+              <th width=  "5%" text-align="center">Z</th>
+              <th width=  "5%" text-align="center">d_Z</th>
+              <th width=  "5%" text-align="center">d_NED</th>
+              <th width= "12%" text-align="center">Keywords</th>
+              <th width= "13%" text-align="center">Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+        </table>
+      </div>
+
+      <!-- keyword table -->
+      <div class='table-content' id='Keywords' style='display:none'>
+        <button class="table-button" onclick="openInfoDialog('Keyword')">Info</button>
+        <table class="compact stripe cell-border" id="Keyword-table">
+          <thead>
+            <tr>
+              <th width= "5%" text-align="right">ID</th>
+              <th width="45%" text-align="center">Key</th>
+              <th width="50%" text-align="center">References</th>
+            </tr>
+          </thead>
+          <tbody>
+        </table>
+      </div>
+
+      <!-- skyobjects table -->
+      <div class='table-content' id='SkyObjects' style='display:none'>
+        <button class="table-button" onclick="openInfoDialog('SkyObject')">Info</button>
+        <table class="compact stripe cell-border" id="SkyObject-table">
+          <thead>
+            <tr>
+              <th width= "5%" text-align="right">ID</th>
+              <th width="15%" text-align="center">Keywords</th>
+              <th width="15%" text-align="center">Comment</th>
+              <th width="65%" text-align="center">References</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+<!--------------------------------------------------------------------------------
+|                                     FORMS                                      |
+--------------------------------------------------------------------------------->
+    <div class="popup-box" id="Constellation-info" style="display:none">
+      <div class="popup-title">Constellation Info</div>
+      <div class="form-container">
+        <div class="form-container-row">
+          <label class="form-label">Code</label>
+          <label class="form-data" id="info-constellation-code"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Name (lt)</label>
+          <label class="form-data" id="info-constellation-name_lt"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Name (de)</label>
+          <label class="form-data" id="info-constellation-name_de"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Name (en)</label>
+          <label class="form-data" id="info-constellation-name_en"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">N/S</label>
+          <label class="form-data" id="info-constellation-hemisphere"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Detector</label>
+          <label class="form-data" id="info-constellation-detector"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Year</label>
+          <label class="form-data" id="info-constellation-year"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Vis-1</label>
+          <label class="form-data" id="info-constellation-vis1"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Vis-2 </label>
+          <label class="form-data" id="info-constellation-vis2"></label>
+        </div>
+      </div>
+      <div class="popup-button-area">
+        <button class="btn-cancel" onclick="closePopupBox('Constellation-info')">Close</button>
+      </div>
+    </div>
+
+    <div class="popup-box" id="Category-info" style="display:none">
+      <div class="popup-title">Category Info</div>
+      <div class="form-container">
+        <div class="form-container-row">
+          <label class="form-label">Code</label>
+          <label class="form-data" id="info-category-code"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Name (de)</label>
+          <label class="form-data" id="info-category-name_de"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Name (en)</label>
+          <label class="form-data" id="info-category-name_en"></label>
+        </div>
+      </div>
+      <div class="popup-button-area">
+        <button class="btn-cancel" onclick="closePopupBox('Category-info')">Close</button>
+      </div>
+    </div>
+
+    <div class="popup-box" id="Catalog-info" style="display:none">
+      <div class="popup-title">Catalog Info</div>
+      <div class="form-container">
+        <div class="form-container-row">
+          <label class="form-label">Name</label>
+          <label class="form-data" id="info-catalog-name"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Prefix</label>
+          <label class="form-data" id="info-catalog-prefix"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Description</label>
+          <label class="form-data" id="info-catalog-description"></label>
+        </div>
+      </div>
+      <div class="popup-button-area">
+        <button class="btn-cancel" onclick="closePopupBox('Catalog-info')">Close</button>
+      </div>
+    </div>
+
+    <div class="popup-box" id="MessierObject-info" style="display:none">
+      <div class="popup-title">Messier Object Info</div>
+      <div class="form-container">
+        <div class="form-container-row">
+          <label class="form-label">Label</label>
+          <label class="form-data" id="info-messier-object-label"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Constellation</label>
+          <label class="form-data" id="info-messier-object-constellation"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Category</label>
+          <label class="form-data" id="info-messier-object-category"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Subtype</label>
+          <label class="form-data" id="info-messier-object-subtype"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Distance</label>
+          <label class="form-data" id="info-messier-object-distance"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Unit</label>
+          <label class="form-data" id="info-messier-object-unit"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">V-Mag</label>
+          <label class="form-data" id="info-messier-object-v_mag"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">NGC/IC</label>
+          <label class="form-data" id="info-messier-object-ngcic"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Remark</label>
+          <label class="form-data" id="info-messier-object-remark"></label>
+        </div>
+      </div>
+      <div class="popup-button-area">
+        <button class="btn-cancel" onclick="closePopupBox('MessierObject-info')">Close</button>
+      </div>
+    </div>
+
+    <div class="popup-box" id="NgcicObject-info" style="display:none">
+      <div class="popup-title">NGC/IC Info</div>
+      <div class="form-container">
+        <div class="form-container-row">
+          <label class="form-label">Label</label>
+          <label class="form-data" id="info-ngcic-object-label"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Constellation</label>
+          <label class="form-data" id="info-ngcic-object-constellation"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Category</label>
+          <label class="form-data" id="info-ngcic-object-category"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Subtype</label>
+          <label class="form-data" id="info-ngcic-object-subtype"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Right Ascension</label>
+          <label class="form-data" id="info-ngcic-object-right-ascension"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Declination</label>
+          <label class="form-data" id="info-ngcic-object-declination"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">B-Magnitude</label>
+          <label class="form-data" id="info-ngcic-object-b_mag"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">V-Magnitude</label>
+          <label class="form-data" id="info-ngcic-object-v_mag"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Brightness</label>
+          <label class="form-data" id="info-ngcic-object-brightness"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Position Angle</label>
+          <label class="form-data" id="info-ngcic-object-position-angle"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Z</label>
+          <label class="form-data" id="info-ngcic-object-z"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Distance Z</label>
+          <label class="form-data" id="info-ngcic-object-distance-z"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Distance NED</label>
+          <label class="form-data" id="info-ngcic-object-distance-ned"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Keywords</label>
+          <label class="form-data" id="info-ngcic-object-keywords"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Comment</label>
+          <label class="form-data" id="info-ngcic-object-comment"></label>
+        </div>
+      </div>
+      <div class="popup-button-area">
+        <button class="btn-cancel" onclick="closePopupBox('NgcicObject-info')">Close</button>
+      </div>
+    </div>
+
+    <div class="popup-box" id="Keyword-info" style="display:none">
+      <div class="popup-title">Keyword Info</div>
+      <div class="form-container">
+        <div class="form-container-row">
+          <label class="form-label">Key</label>
+          <label class="form-data" id="info-keyword-key"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">References</label>
+          <label class="form-data" id="info-keyword-references"></label>
+        </div>
+      </div>
+      <div class="popup-button-area">
+        <button class="btn-cancel" onclick="closePopupBox('Keyword-info')">Close</button>
+      </div>
+    </div>
+
+    <div class="popup-box" id="SkyObject-info" style="display:none">
+      <div class="popup-title">SkyObject Info</div>
+      <div class="form-container">
+        <div class="form-container-row">
+          <label class="form-label">Keywords</label>
+          <label class="form-data" id="info-skyobject-keywords"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">Comment</label>
+          <label class="form-data" id="info-skyobject-comment"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label">References</label>
+          <label class="form-data" id="info-skyobject-references"></label>
+        </div>
+        <div class="form-container-row">
+          <label class="form-label"></label>
+        </div>
+      </div>
+      <div class="popup-button-area">
+        <button class="btn-cancel" onclick="closePopupBox('SkyObject-info')">Close</button>
+      </div>
+    </div>
+
+<!--------------------------------------------------------------------------------
+|                               EVENTS and FOOTER                                |
+--------------------------------------------------------------------------------->
+    <div id="messages" class='container'></div>
+
+    <div id="footer" style='display:block'>
+      <hr><hr>
+      © Copyright 2026 by K. Höflinger (latest change: 17/06/2026).&nbsp;&nbsp;
+    </div>
+
+    <script src="Constellation.js"></script>
+    <script src="Catalog.js"></script>
+    <script src="Category.js"></script>
+    <script src="MessierObject.js"></script>
+    <script src="NgcicObject.js"></script>
+    <script src="Keyword.js"></script>
+    <script src="SkyObject.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
